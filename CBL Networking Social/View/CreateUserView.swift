@@ -101,6 +101,19 @@ class CreateUserView: UIView {
         return txt
     }()
     
+    lazy var createButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("Cadastrar", for: .normal)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 24)
+        button.setTitleColor(.white, for: .normal)
+        button.clipsToBounds = true
+        button.layer.cornerRadius = 8
+        button.titleLabel?.textAlignment = .center
+        
+        return button
+    }()
+    
     override init (frame: CGRect) {
         super.init(frame: frame)
         self.addSubview(self.subImageView)
@@ -109,6 +122,7 @@ class CreateUserView: UIView {
         self.addSubview(self.loginTextField)
         self.addSubview(self.emailTextField)
         self.addSubview(self.passwordTextField)
+        self.addSubview(self.createButton)
         self.configConstraints()
     }
     
@@ -150,8 +164,15 @@ class CreateUserView: UIView {
             self.passwordTextField.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
             self.passwordTextField.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
             self.emailTextField.heightAnchor.constraint(equalToConstant: 39),
-            self.passwordTextField.heightAnchor.constraint(equalToConstant: 40)
+            self.passwordTextField.heightAnchor.constraint(equalToConstant: 40),
         
+            
+            
+            self.createButton.topAnchor.constraint(equalTo: self.passwordTextField.bottomAnchor, constant: 20),
+            self.createButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
+            self.createButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
+            self.passwordTextField.heightAnchor.constraint(equalToConstant: 39),
+            self.createButton.heightAnchor.constraint(equalToConstant: 40)
         ])
     }
 
