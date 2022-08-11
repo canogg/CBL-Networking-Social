@@ -53,7 +53,7 @@ class API {
 //
 //    }
     static func getPosts () async -> [PostsModel] {
-        var urlRequest = URLRequest(url: URL(string: "http://adaspace.local/users")!)
+        var urlRequest = URLRequest(url: URL(string: "http://adaspace.local/posts")!)
         urlRequest.httpMethod = "GET"
         
         do {

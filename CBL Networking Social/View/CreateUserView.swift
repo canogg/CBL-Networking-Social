@@ -7,8 +7,16 @@
 
 import UIKit
 
+protocol sendUserDelegate {
+    func registerUser(loginTextField: String, emailTextField: String, passwordTextField: String)
+}
+
 class CreateUserView: UIView {
     
+    var delegate: sendUserDelegate? = nil
+    var createVC: CreatVC? = nil
+    
+    var email = ""
     lazy var subImageView: UIImageView = {
        let image = UIImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
@@ -58,6 +66,7 @@ class CreateUserView: UIView {
     }()
     
     lazy var emailTextField: UITextField = {
+        
         let txt = UITextField()
         txt.translatesAutoresizingMaskIntoConstraints = false
         txt.backgroundColor = UIColor.white
@@ -75,7 +84,8 @@ class CreateUserView: UIView {
         txt.layer.cornerRadius = 9
         txt.layer.borderWidth = 1.0
         txt.layer.borderColor = UIColor.white.cgColor
-        
+        email = txt.text ?? ""
+        print(email)
         return txt
     }()
 
@@ -110,10 +120,14 @@ class CreateUserView: UIView {
         button.clipsToBounds = true
         button.layer.cornerRadius = 8
         button.titleLabel?.textAlignment = .center
+        button.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
         
         return button
     }()
     
+    @objc func buttonAction(sender: UIButton!){
+        createVC?.registerUser()
+    }
     override init (frame: CGRect) {
         super.init(frame: frame)
         self.addSubview(self.subImageView)
@@ -125,6 +139,7 @@ class CreateUserView: UIView {
         self.addSubview(self.createButton)
         self.configConstraints()
     }
+    
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -175,6 +190,11 @@ class CreateUserView: UIView {
             self.createButton.heightAnchor.constraint(equalToConstant: 40)
         ])
     }
-
+    
+    func didEditTextField(textField: UITextField, emailText: UITextField, passwordText: UITextField){
+        self.delegate?.registerUser(loginTextField: textField.text!, emailTextField: emailText.text!, passwordTextField: passwordText.text!)
+        
+    }
 }
+
 
