@@ -20,11 +20,11 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        API.createUser()
+        //API.createUser()
 //        label.text = viewModel.textoAPI
         // Do any additional setup after loading the view.
     }
 
-
+   
 }
 

@@ -32,13 +32,13 @@ class CreatVC: UIViewController {
 extension CreatVC: sendUserDelegate{
     
     func registerUser(loginTextField: String, emailTextField: String, passwordTextField: String) {
-        user?.name = loginTextField
-        user?.email = emailTextField
-        user?.password = passwordTextField
+        user = UsersModel(name: loginTextField, email: emailTextField, password: passwordTextField)
+//        user?.name = loginTextField
+//        user?.email = emailTextField
+//        user?.password = passwordTextField
         
+        API.createUser(user: user!)
     }
-//    func registerUser(){
-//        API.createUser()
-//    }
+
 }
 

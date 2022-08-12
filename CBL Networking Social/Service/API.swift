@@ -9,7 +9,7 @@ import Foundation
 
 class API {
     
-    static func createUser () {
+    static func createUser (user: UsersModel) {
         
         var urlRequest = URLRequest(url: URL(string: "http://adaspace.local/users")!)
         urlRequest.httpMethod = "POST"
@@ -18,7 +18,7 @@ class API {
         ]
         
         do {
-            let user = UsersModel(name: "nicolasguitarrista227", email: "nicolasgatinho2026@fresno.com", password: "testando43222")
+            let user = UsersModel(name: user.name, email: user.email, password: user.password)
             let encoder = JSONEncoder()
             urlRequest.httpBody = try encoder.encode(user)
             let session = URLSession.shared
