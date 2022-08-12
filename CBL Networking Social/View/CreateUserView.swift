@@ -14,7 +14,7 @@ protocol sendUserDelegate {
 class CreateUserView: UIView {
     
     var delegate: sendUserDelegate? = nil
-    var createVC: CreatVC? = nil
+    var createVC: CreatVC? = CreatVC()
     
     var email = ""
     lazy var subImageView: UIImageView = {
@@ -126,7 +126,7 @@ class CreateUserView: UIView {
     }()
     
     @objc func buttonAction(sender: UIButton!){
-        createVC?.registerUser()
+        self.createVC?.registerUser(loginTextField: loginTextField.text!, emailTextField: emailTextField.text!, passwordTextField: passwordTextField.text!)
     }
     override init (frame: CGRect) {
         super.init(frame: frame)
