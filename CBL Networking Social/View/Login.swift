@@ -35,11 +35,83 @@ class LoginView: UIView {
         return label
     }()
     
+    lazy var loginTextField: UITextField = {
+        let txt = UITextField()
+        txt.translatesAutoresizingMaskIntoConstraints = false
+        txt.backgroundColor = UIColor.white
+        txt.autocorrectionType = .no
+        txt.borderStyle = .roundedRect
+        txt.keyboardType = .alphabet
+        txt.attributedPlaceholder = NSAttributedString(
+            string: "Login",
+            attributes: [NSAttributedString.Key.foregroundColor: UIColor.black.withAlphaComponent(0.4)]
+            
+        )
+        
+        txt.textColor = .black
+        txt.clipsToBounds = true
+        txt.layer.cornerRadius = 9
+        txt.layer.borderWidth = 1.0
+        txt.layer.borderColor = UIColor.white.cgColor
+        
+        return txt
+    }()
+    
+    lazy var passwordTextField: UITextField = {
+        let txt = UITextField()
+        txt.translatesAutoresizingMaskIntoConstraints = false
+        txt.backgroundColor = UIColor.white
+        txt.autocorrectionType = .no
+        txt.borderStyle = .roundedRect
+        txt.keyboardType = .alphabet
+        txt.attributedPlaceholder = NSAttributedString(
+            string: "Senha",
+            attributes: [NSAttributedString.Key.foregroundColor: UIColor.black.withAlphaComponent(0.4)]
+            
+        )
+        
+        txt.textColor = .black
+        txt.clipsToBounds = true
+        txt.layer.cornerRadius = 9
+        txt.layer.borderWidth = 1.0
+        txt.layer.borderColor = UIColor.white.cgColor
+        
+        return txt
+    }()
+    
+    lazy var recoverPasswordButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("Recuperar senha", for: .normal)
+        button.setTitleColor(UIColor.white, for:  .normal)
+        return button
+    }()
+    
+    lazy var createButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("Entrar", for: .normal)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 24)
+        button.setTitleColor(.white, for: .normal)
+        button.clipsToBounds = true
+        button.layer.borderWidth = 1
+        button.layer.borderColor = UIColor.white.cgColor
+        button.layer.cornerRadius = 8
+        button.titleLabel?.textAlignment = .center
+
+        
+        return button
+    }()
+    
     override init (frame: CGRect) {
         super.init(frame: frame)
         self.addSubview(self.subImageView)
         self.addSubview(self.logoAppImageView)
         self.addSubview(self.loginLabel)
+        self.addSubview(self.loginTextField)
+        self.addSubview(self.passwordTextField)
+        self.addSubview(self.recoverPasswordButton)
+        self.addSubview(self.createButton)
         self.configConstraints()
     }
     
@@ -62,10 +134,31 @@ class LoginView: UIView {
             self.logoAppImageView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             
             self.loginLabel.topAnchor.constraint(equalTo: self.logoAppImageView.bottomAnchor, constant: 16),
-            self.loginLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor)
+            self.loginLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            
+            self.loginTextField.topAnchor.constraint(equalTo: self.loginLabel.bottomAnchor, constant: 32),
+            self.loginTextField.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
+            self.loginTextField.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
+            self.loginLabel.heightAnchor.constraint(equalToConstant: 39),
+            self.loginTextField.heightAnchor.constraint(equalToConstant: 40),
             
             
         
+            self.passwordTextField.topAnchor.constraint(equalTo: self.loginTextField.bottomAnchor, constant: 20),
+            self.passwordTextField.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
+            self.passwordTextField.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
+            self.loginTextField.heightAnchor.constraint(equalToConstant: 39),
+            self.passwordTextField.heightAnchor.constraint(equalToConstant: 40),
+        
+            self.recoverPasswordButton.topAnchor.constraint(equalTo: self.passwordTextField.bottomAnchor, constant: 12),
+            self.recoverPasswordButton.trailingAnchor.constraint(equalTo: self.loginTextField.trailingAnchor),
+            self.recoverPasswordButton.heightAnchor.constraint(equalToConstant: 16),
+            
+            self.createButton.topAnchor.constraint(equalTo: self.passwordTextField.bottomAnchor, constant: 80),
+            self.createButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
+            self.createButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
+            self.passwordTextField.heightAnchor.constraint(equalToConstant: 39),
+            self.createButton.heightAnchor.constraint(equalToConstant: 40)
         ])
     }
 

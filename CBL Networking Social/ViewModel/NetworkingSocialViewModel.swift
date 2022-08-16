@@ -9,17 +9,17 @@ import UIKit
 
 class CreatVC: UIViewController {
     
-    var screen: CreateUserView?
+    var screen: TableViewController?
     var user: UsersModel?
     
     override func loadView() {
-        self.screen = CreateUserView()
+        self.screen = TableViewController()
         self.view = self.screen
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+    
     }
 
     override func viewWillAppear(_ animated: Bool) {

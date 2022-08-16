@@ -9,13 +9,18 @@ import Foundation
 
 class PostsModel: Codable {
     
+    let id: String
+    let content: String
+    let user_id: String
+    let created_at: String
+    let updated_at: String
     
+    init(id: String, content: String, user_id: String, created_at: String, updated_at: String) {
+        self.id = id
+        self.content = content
+        self.user_id = user_id
+        self.created_at = created_at
+        self.updated_at = updated_at
+    }
 }
 
-//{
-//  "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-//  "content": "string",
-//  "user_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-//  "created_at": "2022-08-09T18:40:02.381Z",
-//  "updated_at": "2022-08-09T18:40:02.381Z"
-//}

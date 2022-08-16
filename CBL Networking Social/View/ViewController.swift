@@ -11,7 +11,7 @@ class ViewModel {
     let textoAPI: String = "Coisa que vem da API"
 }
 
-class ViewController: UIViewController {
+class ViewController: UIViewController{
 
     // navegacao \\self.present...
     // criação das views que vao pra tela // self.view.addSubview(...)
@@ -20,11 +20,8 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        //API.createUser()
-//        label.text = viewModel.textoAPI
-        // Do any additional setup after loading the view.
+
     }
 
-   
 }
 

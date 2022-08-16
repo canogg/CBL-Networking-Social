@@ -128,6 +128,7 @@ class CreateUserView: UIView {
     @objc func buttonAction(sender: UIButton!){
         self.createVC?.registerUser(loginTextField: loginTextField.text!, emailTextField: emailTextField.text!, passwordTextField: passwordTextField.text!)
     }
+    
     override init (frame: CGRect) {
         super.init(frame: frame)
         self.addSubview(self.subImageView)

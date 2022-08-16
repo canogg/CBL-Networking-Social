@@ -59,7 +59,7 @@ class API {
         do {
             let (data, _) = try await URLSession.shared.data(for: urlRequest)
             let getPostsDecoded = try JSONDecoder().decode([PostsModel].self, from: data)
-        
+            return getPostsDecoded
         } catch {
             print(error)
         }
