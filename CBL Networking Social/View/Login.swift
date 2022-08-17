@@ -30,8 +30,8 @@ class LoginView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .white
-        label.font = UIFont.boldSystemFont(ofSize: 40)
-        label.text = "Social Net"
+        label.font = UIFont.boldSystemFont(ofSize: 36 )
+        label.text = "Sign in"
         return label
     }()
     
@@ -133,7 +133,7 @@ class LoginView: UIView {
             self.logoAppImageView.widthAnchor.constraint(equalToConstant: 108),
             self.logoAppImageView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             
-            self.loginLabel.topAnchor.constraint(equalTo: self.logoAppImageView.bottomAnchor, constant: 16),
+            self.loginLabel.topAnchor.constraint(equalTo: self.logoAppImageView.bottomAnchor, constant: 25),
             self.loginLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             
             self.loginTextField.topAnchor.constraint(equalTo: self.loginLabel.bottomAnchor, constant: 32),

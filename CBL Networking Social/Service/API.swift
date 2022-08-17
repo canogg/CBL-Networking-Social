@@ -93,9 +93,63 @@ class API {
         let user = try! JSONDecoder().decode(UsersModel.withToken.self, from: data)
 //        urlRequest.httpBody = try JSONEncoder().encode(user)
         print("Usuario:\(user.token)")
-//            let session = try JSONDecoder().decode(Session.self)
+        let token = Data(user.token.utf8)
+        //            let session = try JSONDecoder().decode(Session.self)
+        KeychainHelper.standard.save(token, service: "access-token", account: "socialnet")
         return user
-      
+        
+    }
+    
+    static func sendPost() {
+        
+        var urlRequest = URLRequest(url: URL(string: "http://adaspace.local/documentation#/Posts/post_posts")!)
+        urlRequest.httpMethod = "POST"
+        
+        urlRequest.allHTTPHeaderFields = [
+            "Content-Type": "text/plain"
+        ]
+        let bToken = "KKN43TiCYLhDE7nJ7vPjVA=="
+//        let bToken = KeychainHelper.standard.read(service: "acess-token", account: "socialnet")
+        urlRequest.setValue("Bearer\(bToken)", forHTTPHeaderField: "Authorization")
+        
+        
+        let sendPosts = "Oiii"
+        
+        do{
+            let encoder = JSONEncoder()
+            urlRequest.httpBody = try encoder.encode(sendPosts)
+            let session = URLSession.shared
+            
+            let dataTask = session.dataTask(with: urlRequest) {data, response, error in
+                guard
+                    let data = data,
+                    let response = response as? HTTPURLResponse,
+                    error == nil
+                else {
+                    print("error", error ?? URLError(.badServerResponse))
+                    return
+                }
+                guard (200 ... 299) ~= response.statusCode else {
+                    print("Não cadastrou, erro =  \(response)")
+                    return
+                }
+                guard (500 ... 599) ~= response.statusCode else {
+                    print("Enviou =  \(response.statusCode)")
+                    print("data =  \(data)")
+                    
+                    let user = try! JSONDecoder().decode(UsersModel.withToken.self, from: data)
+                    print(user.token)
+                    return
+                }
+            }
+            dataTask.resume()
+
+            
+        } catch {
+            print(error)
+        }
+        
+        
     }
 }
 
