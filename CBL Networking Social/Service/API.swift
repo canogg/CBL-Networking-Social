@@ -102,54 +102,38 @@ class API {
     
     static func sendPost() {
         
-        var urlRequest = URLRequest(url: URL(string: "http://adaspace.local/documentation#/Posts/post_posts")!)
+        var urlRequest = URLRequest(url: URL(string: "http://adaspace.local/posts")!)
         urlRequest.httpMethod = "POST"
         
-        urlRequest.allHTTPHeaderFields = [
-            "Content-Type": "text/plain"
-        ]
-        let bToken = "KKN43TiCYLhDE7nJ7vPjVA=="
-//        let bToken = KeychainHelper.standard.read(service: "acess-token", account: "socialnet")
-        urlRequest.setValue("Bearer\(bToken)", forHTTPHeaderField: "Authorization")
+        urlRequest.setValue("text/plain", forHTTPHeaderField: "Content-Type")
+//        let bToken = "cR8MIsKpwNJti5g0luS9sg=="
+       let bToken = KeychainHelper.standard.read(service: "acess-token", account: "socialnet")
+        urlRequest.setValue("Bearer \(bToken)", forHTTPHeaderField: "Authorization")
         
         
         let sendPosts = "Oiii"
         
         do{
             let encoder = JSONEncoder()
-            urlRequest.httpBody = try encoder.encode(sendPosts)
+            urlRequest.httpBody = sendPosts.data(using: .utf8)! as Data
             let session = URLSession.shared
             
-            let dataTask = session.dataTask(with: urlRequest) {data, response, error in
-                guard
-                    let data = data,
-                    let response = response as? HTTPURLResponse,
-                    error == nil
-                else {
-                    print("error", error ?? URLError(.badServerResponse))
-                    return
+            let task = URLSession.shared.dataTask(with: urlRequest){ data, _, error in
+                    guard let data = data, error == nil else{
+                        return
+                    }
+                    do{
+                        let response = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
+                        print("sucesso: \(response)")
+                    }
+                    catch{
+                        print(error)
+                    }
                 }
-                guard (200 ... 299) ~= response.statusCode else {
-                    print("Não cadastrou, erro =  \(response)")
-                    return
-                }
-                guard (500 ... 599) ~= response.statusCode else {
-                    print("Enviou =  \(response.statusCode)")
-                    print("data =  \(data)")
-                    
-                    let user = try! JSONDecoder().decode(UsersModel.withToken.self, from: data)
-                    print(user.token)
-                    return
-                }
+                task.resume()
             }
-            dataTask.resume()
 
-            
-        } catch {
-            print(error)
-        }
-        
-        
+    
     }
 }
 
