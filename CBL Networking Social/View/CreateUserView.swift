@@ -89,6 +89,7 @@ class CreateUserView: UIView {
         return txt
     }()
 
+
     lazy var passwordTextField: UITextField = {
         let txt = UITextField()
         txt.translatesAutoresizingMaskIntoConstraints = false

@@ -82,7 +82,7 @@ class LoginView: UIView {
     lazy var recoverPasswordButton: UIButton = {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Recuperar senha", for: .normal)
+        button.setTitle("Cadastrar", for: .normal)
         button.setTitleColor(UIColor.white, for:  .normal)
         return button
     }()

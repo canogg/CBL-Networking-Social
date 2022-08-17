@@ -18,10 +18,11 @@ class API {
         ]
         
         do {
-            let user = UsersModel(name: user.name, email: user.email, password: user.password)
+            let user = UsersModel(id: UUID(),name: user.name, email: user.email, password: user.password)
             let encoder = JSONEncoder()
             urlRequest.httpBody = try encoder.encode(user)
             let session = URLSession.shared
+            
             
             let dataTask = session.dataTask(with: urlRequest) {data, response, error in
                 guard
@@ -39,6 +40,9 @@ class API {
                 guard (500 ... 599) ~= response.statusCode else {
                     print("Cadastrou, status =  \(response.statusCode)")
                     print("data =  \(data)")
+                    
+                    let user = try! JSONDecoder().decode(UsersModel.withToken.self, from: data)
+                    print(user.token)
                     return
                 }
             }
@@ -59,6 +63,7 @@ class API {
         do {
             let (data, _) = try await URLSession.shared.data(for: urlRequest)
             let getPostsDecoded = try JSONDecoder().decode([PostsModel].self, from: data)
+            print(getPostsDecoded)
             return getPostsDecoded
         } catch {
             print(error)
@@ -66,6 +71,31 @@ class API {
 
         return []
     }
-
+    
+    static func postLogin() async throws -> UsersModel.withToken {
+        
+        var urlRequest = URLRequest(url: URL(string: "http://adaspace.local/users/login")!)
+        urlRequest.httpMethod = "POST"
+        
+        let username = "Cicero@carol.com"
+        let password = "Teste123"
+        let loginString = "\(username):\(password)"
+        
+        let loginData = loginString.data(using: String.Encoding.utf8)!
+        
+        let based64LoginString = loginData.base64EncodedString()
+        urlRequest.setValue("Basic \(based64LoginString)", forHTTPHeaderField: "Authorization")
+        
+        let (data, response) = try await URLSession.shared.data(for: urlRequest)
+        
+        print("DEU CERTO\(data)")
+        print(response)
+        let user = try! JSONDecoder().decode(UsersModel.withToken.self, from: data)
+//        urlRequest.httpBody = try JSONEncoder().encode(user)
+        print("Usuario:\(user.token)")
+//            let session = try JSONDecoder().decode(Session.self)
+        return user
+      
+    }
 }
 
