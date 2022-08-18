@@ -7,7 +7,11 @@
 
 import UIKit
 
+
 class LoginView: UIView {
+    
+    var delegate: sendUserDelegate? = nil
+    var createVC: CreatVC?
     
     lazy var subImageView: UIImageView = {
        let image = UIImageView()
@@ -98,10 +102,19 @@ class LoginView: UIView {
         button.layer.borderColor = UIColor.white.cgColor
         button.layer.cornerRadius = 8
         button.titleLabel?.textAlignment = .center
+        button.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
+//        button.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
 
         
         return button
     }()
+    
+   
+    
+    @objc func buttonAction(sender: UIButton!) {
+        self.createVC?.loginUser(loginTextField: "", emailTextField: loginTextField.text!, passwordTextField: passwordTextField.text!)
+    }
+    
     
     override init (frame: CGRect) {
         super.init(frame: frame)
@@ -160,6 +173,10 @@ class LoginView: UIView {
             self.passwordTextField.heightAnchor.constraint(equalToConstant: 39),
             self.createButton.heightAnchor.constraint(equalToConstant: 40)
         ])
+    }
+    func didEditTextField(textField: UITextField, passwordText: UITextField){
+        self.delegate?.registerUser(loginTextField: textField.text!, emailTextField: "", passwordTextField: passwordText.text!)
+        
     }
 
 }

@@ -11,7 +11,7 @@ import Foundation
 struct UsersModel: Codable, Equatable {
 
     var id: UUID
-    var name: String
+    var name: String?
     var email: String
     var avatar: String?
     var password: String?

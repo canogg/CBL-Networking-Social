@@ -47,15 +47,12 @@ class API {
                 }
             }
             dataTask.resume()
-
+            
         } catch {
             print(error)
         }
     }
-//    static func login () {
-//        var urlRequest = URLRequest(url: URL(string: "http://adaspace.local/users")!)
-//
-//    }
+
     static func getPosts () async -> [PostsModel] {
         var urlRequest = URLRequest(url: URL(string: "http://adaspace.local/posts")!)
         urlRequest.httpMethod = "GET"
@@ -68,18 +65,19 @@ class API {
         } catch {
             print(error)
         }
-
+        
         return []
     }
     
-    static func postLogin() async throws -> UsersModel.withToken {
+    static func postLogin(user: UsersModel) async throws -> UsersModel.withToken {
         
         var urlRequest = URLRequest(url: URL(string: "http://adaspace.local/users/login")!)
         urlRequest.httpMethod = "POST"
         
-        let username = "Cicero@carol.com"
-        let password = "Teste123"
-        let loginString = "\(username):\(password)"
+        let userLogin = UsersModel(id: UUID(),name: user.name, email: user.email, password: user.password)
+        let username = userLogin.email
+        let password = userLogin.password
+        let loginString = "\(username):\(password ?? "")"
         
         let loginData = loginString.data(using: String.Encoding.utf8)!
         
@@ -90,11 +88,30 @@ class API {
         
         print("DEU CERTO\(data)")
         print(response)
-        let user = try! JSONDecoder().decode(UsersModel.withToken.self, from: data)
-//        urlRequest.httpBody = try JSONEncoder().encode(user)
+        let user = try JSONDecoder().decode(UsersModel.withToken.self, from: data)
+        //        urlRequest.httpBody = try JSONEncoder().encode(user)
         print("Usuario:\(user.token)")
         let token = Data(user.token.utf8)
         //            let session = try JSONDecoder().decode(Session.self)
+        KeychainHelper.standard.save(token, service: "access-token", account: "socialnet")
+        return user
+        
+    }
+    
+    static func postLogout() async throws -> UsersModel.withToken {
+        
+        var urlRequest = URLRequest(url: URL(string: "http://adaspace.local/users/logout")!)
+        urlRequest.httpMethod = "POST"
+        
+        let (data, response) = try await URLSession.shared.data(for: urlRequest)
+        
+        print(response)
+        
+        let user = try! JSONDecoder().decode(UsersModel.withToken.self, from: data)
+        print("Usuario:\(user.token)")
+        
+        let token = Data(user.token.utf8)
+        
         KeychainHelper.standard.save(token, service: "access-token", account: "socialnet")
         return user
         
@@ -106,12 +123,12 @@ class API {
         urlRequest.httpMethod = "POST"
         
         urlRequest.setValue("text/plain", forHTTPHeaderField: "Content-Type")
-//        let bToken = "cR8MIsKpwNJti5g0luS9sg=="
-       let bToken = KeychainHelper.standard.read(service: "acess-token", account: "socialnet")
-        urlRequest.setValue("Bearer \(bToken)", forHTTPHeaderField: "Authorization")
+        //        let bToken = "cR8MIsKpwNJti5g0luS9sg=="
+        let bToken: Data? = KeychainHelper.standard.read(service: "access-token", account: "socialnet")
+        urlRequest.setValue("Bearer \(String(data: bToken!, encoding: .utf8)!)", forHTTPHeaderField: "Authorization")
         
         
-        let sendPosts = "Oiii"
+        let sendPosts = "Teste oii"
         
         do{
             let encoder = JSONEncoder()
@@ -119,21 +136,21 @@ class API {
             let session = URLSession.shared
             
             let task = URLSession.shared.dataTask(with: urlRequest){ data, _, error in
-                    guard let data = data, error == nil else{
-                        return
-                    }
-                    do{
-                        let response = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
-                        print("sucesso: \(response)")
-                    }
-                    catch{
-                        print(error)
-                    }
+                guard let data = data, error == nil else{
+                    return
                 }
-                task.resume()
+                do {
+                    let response = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
+                    print("sucesso: \(response)")
+                }
+                catch{
+                    print(error)
+                }
             }
-
-    
+            task.resume()
+        }
+        
+        
     }
 }
 
