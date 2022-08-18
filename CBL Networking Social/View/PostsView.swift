@@ -20,10 +20,32 @@ class PostView: UIView, UITableViewDelegate, UITableViewDataSource {
         return image
     }()
     
-    
+    lazy var digiteTexto: UITextField = {
+        let txt = UITextField()
+        txt.translatesAutoresizingMaskIntoConstraints = false
+        txt.backgroundColor = UIColor.white
+        txt.autocorrectionType = .no
+        txt.borderStyle = .roundedRect
+        txt.keyboardType = .alphabet
+        txt.attributedPlaceholder = NSAttributedString(
+            string: "Digite seu texto",
+            attributes: [NSAttributedString.Key.foregroundColor: UIColor.black.withAlphaComponent(0.4)]
+            
+        )
+        
+        txt.textColor = .black
+        txt.clipsToBounds = true
+        txt.layer.cornerRadius = 9
+        txt.layer.borderWidth = 1.0
+        txt.layer.borderColor = UIColor.white.cgColor
+        
+        return txt
+    }()
+        
     override init (frame: CGRect) {
         super.init(frame: frame)
         self.addSubview(self.subImageView)
+        self.addSubview(digiteTexto)
         self.addSubview(tableView)
         tableView.backgroundColor = .clear
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -66,8 +88,17 @@ class PostView: UIView, UITableViewDelegate, UITableViewDataSource {
         NSLayoutConstraint.activate([
             self.tableView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             self.tableView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            self.tableView.topAnchor.constraint(equalTo: self.topAnchor),
+            self.tableView.topAnchor.constraint(equalTo: self.digiteTexto.bottomAnchor, constant:10),
             self.tableView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+        ])
+        
+        NSLayoutConstraint.activate([
+//
+//            self.digiteTexto.bottomAnchor.constraint(equalTo: self.tableView.topAnchor, constant: 0),
+            self.digiteTexto.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
+            self.digiteTexto.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -70),
+            self.digiteTexto.topAnchor.constraint(equalTo: self.topAnchor, constant: 90),
+        
         ])
     }
 }
