@@ -117,7 +117,7 @@ class API {
         
     }
     
-    static func sendPost() {
+    static func sendPost(texto: String) {
         
         var urlRequest = URLRequest(url: URL(string: "http://adaspace.local/posts")!)
         urlRequest.httpMethod = "POST"
@@ -128,7 +128,7 @@ class API {
         urlRequest.setValue("Bearer \(String(data: bToken!, encoding: .utf8)!)", forHTTPHeaderField: "Authorization")
         
         
-        let sendPosts = "Teste oii"
+        let sendPosts = texto
         
         do{
             let encoder = JSONEncoder()

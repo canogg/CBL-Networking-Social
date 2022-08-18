@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol PostViewDelegate: AnyObject {
+    func sendPost(text: String)
+}
+
 class PostView: UIView, UITableViewDelegate, UITableViewDataSource {
     
     let tableView = UITableView()
@@ -41,12 +45,41 @@ class PostView: UIView, UITableViewDelegate, UITableViewDataSource {
         
         return txt
     }()
+    
+    lazy var createButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("Enviar", for: .normal)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
+        button.layer.borderWidth = 1
+        button.layer.borderColor = UIColor.white.cgColor
+        button.layer.cornerRadius = 8
+        button.setTitleColor(.white, for: .normal)
+        button.clipsToBounds = true
+        button.layer.cornerRadius = 8
+        button.titleLabel?.textAlignment = .center
+        button.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
+
         
+        return button
+        
+    }()
+    
+    @objc func buttonAction(sender: UIButton!) {
+        if digiteTexto.text != nil {
+            delegate?.sendPost(text: digiteTexto.text!)
+        }
+    }
+    
+    weak var delegate: PostViewDelegate?
+    
+    
     override init (frame: CGRect) {
         super.init(frame: frame)
         self.addSubview(self.subImageView)
         self.addSubview(digiteTexto)
         self.addSubview(tableView)
+        self.addSubview(createButton)
         tableView.backgroundColor = .clear
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
@@ -96,9 +129,17 @@ class PostView: UIView, UITableViewDelegate, UITableViewDataSource {
 //
 //            self.digiteTexto.bottomAnchor.constraint(equalTo: self.tableView.topAnchor, constant: 0),
             self.digiteTexto.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
-            self.digiteTexto.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -70),
+            self.digiteTexto.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -80),
             self.digiteTexto.topAnchor.constraint(equalTo: self.topAnchor, constant: 90),
         
+        ])
+        
+        NSLayoutConstraint.activate([
+         
+            self.createButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 320),
+            self.createButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10),
+            self.createButton.topAnchor.constraint(equalTo: self.topAnchor, constant: 90),
+            
         ])
     }
 }
