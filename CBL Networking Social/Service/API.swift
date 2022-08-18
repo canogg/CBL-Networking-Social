@@ -11,7 +11,7 @@ class API {
     
     static func createUser (user: UsersModel) {
         
-        var urlRequest = URLRequest(url: URL(string: "http://adaspace.local/users")!)
+        var urlRequest = URLRequest(url: URL(string: "http://localhost:8080/users")!)
         urlRequest.httpMethod = "POST"
         urlRequest.allHTTPHeaderFields = [
             "Content-Type": "application/json"
@@ -43,6 +43,9 @@ class API {
                     
                     let user = try! JSONDecoder().decode(UsersModel.withToken.self, from: data)
                     print(user.token)
+                    let token = Data(user.token.utf8)
+                    
+                    KeychainHelper.standard.save(token, service: "access-token", account: "socialnet")
                     return
                 }
             }
@@ -52,9 +55,12 @@ class API {
             print(error)
         }
     }
+    
+    
+    
 
     static func getPosts () async -> [PostsModel] {
-        var urlRequest = URLRequest(url: URL(string: "http://adaspace.local/posts")!)
+        var urlRequest = URLRequest(url: URL(string: "http://localhost:8080/posts")!)
         urlRequest.httpMethod = "GET"
         
         do {
@@ -71,7 +77,7 @@ class API {
     
     static func postLogin(user: UsersModel) async throws -> UsersModel.withToken {
         
-        var urlRequest = URLRequest(url: URL(string: "http://adaspace.local/users/login")!)
+        var urlRequest = URLRequest(url: URL(string: "http://localhost:8080/users/login")!)
         urlRequest.httpMethod = "POST"
         
         let userLogin = UsersModel(id: UUID(),name: user.name, email: user.email, password: user.password)
@@ -100,7 +106,7 @@ class API {
     
     static func postLogout() async throws -> UsersModel.withToken {
         
-        var urlRequest = URLRequest(url: URL(string: "http://adaspace.local/users/logout")!)
+        var urlRequest = URLRequest(url: URL(string: "http://localhost:8080/users/logout")!)
         urlRequest.httpMethod = "POST"
         
         let (data, response) = try await URLSession.shared.data(for: urlRequest)
@@ -119,7 +125,7 @@ class API {
     
     static func sendPost(texto: String) {
         
-        var urlRequest = URLRequest(url: URL(string: "http://adaspace.local/posts")!)
+        var urlRequest = URLRequest(url: URL(string: "http://localhost:8080/posts")!)
         urlRequest.httpMethod = "POST"
         
         urlRequest.setValue("text/plain", forHTTPHeaderField: "Content-Type")
@@ -149,6 +155,7 @@ class API {
             }
             task.resume()
         }
+        
         
         
     }

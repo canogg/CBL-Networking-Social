@@ -88,6 +88,7 @@ class LoginView: UIView {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Cadastrar", for: .normal)
         button.setTitleColor(UIColor.white, for:  .normal)
+        button.addTarget(self, action: #selector(signup), for: .touchUpInside)
         return button
     }()
     
@@ -109,11 +110,14 @@ class LoginView: UIView {
         return button
     }()
     
-   
+    @objc func signup (sender: UIButton) {
+        self.createVC?.goToCreateUserViewController()
+    }
     
     @objc func buttonAction(sender: UIButton!) {
         self.createVC?.loginUser(loginTextField: "", emailTextField: loginTextField.text!, passwordTextField: passwordTextField.text!)
     }
+    
     
     
     override init (frame: CGRect) {

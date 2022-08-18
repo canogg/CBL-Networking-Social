@@ -43,9 +43,13 @@ extension CreatVC: sendUserDelegate{
     
     func registerUser(loginTextField: String, emailTextField: String, passwordTextField: String) {
         user = UsersModel(id: UUID(),name: loginTextField, email: emailTextField, password: passwordTextField)
-        
-        
-        API.createUser(user: user!)
+
+        do{
+            API.createUser(user: user!)
+            self.goToPostViewController()
+        } catch {
+            print(error)
+        }
     }
     
     func loginUser(loginTextField: String, emailTextField: String, passwordTextField: String) {
@@ -60,21 +64,16 @@ extension CreatVC: sendUserDelegate{
                 print(error)
             }
         }
-        
-        //            API.sendPost()
-        
-        //        API.sendPost()
     }
     
     func goToPostViewController() {
-//        DispatchQueue.main.async {
             let postViewController = PostsViewController()
-//            postViewController.view.backgroundColor = .red
-//            postViewController.screen?.backgroundColor = .green
-//            self.present(postViewController, animated: true)
             self.navigationController?.pushViewController(postViewController, animated: true)
-//        }
     }
     
+    func goToCreateUserViewController() {
+        let creatViewController = CreateUserViewController()
+        self.navigationController?.pushViewController(creatViewController, animated: true)
+    }
 }
 

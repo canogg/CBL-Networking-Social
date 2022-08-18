@@ -7,12 +7,30 @@
 
 import UIKit
 
-class CreateUserViewController: UIViewController {
+extension CreateUserViewController: sendUserDelegate {
+    func registerUser(loginTextField: String, emailTextField: String, passwordTextField: String) {
+        goToPostViewController()
+    }
+}
 
+class CreateUserViewController: UIViewController {
+    
+    var screen: CreateUserView = CreateUserView()
+    
+    override func loadView() {
+        super.loadView()
+        screen.delegate = self
+        self.view = self.screen
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+       // loadTableView()
+    }
+    
+    func goToPostViewController() {
+        let postViewController = PostsViewController()
+        self.navigationController?.pushViewController(postViewController, animated: true)
     }
     
 
